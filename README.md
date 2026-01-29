@@ -122,41 +122,129 @@ Animark-AI is designed to run on **consumer hardware**.
 
 ## 🏗️ System Architecture
 
-```text
-animark-ai/
+```
+Animark-AI/
 │
-├── agents/                 # LLM agents
-│   ├── script_agent.py
-│   ├── storyboard_agent.py
-│   └── prompt_agent.py
+├── README.md                  # Product-facing overview (FIRST IMPRESSION)
+├── WEBSITE.md                 # Landing page / marketing copy
+├── DEMO.md                    # Demo videos, GIFs, walkthrough
 │
-├── generation/             # Visual generation
-│   ├── image_gen.py
-│   ├── motion_gen.py
-│   └── consistency.py
+├── docs/                      # SYSTEM & ENGINEERING
+│   ├── HLD.md                 # High-Level Design
+│   ├── LLD.md                 # Low-Level Design
+│   ├── ARCHITECTURE.md        # Component & deployment architecture
+│   ├── PIPELINE.md            # End-to-end generation pipeline
+│   ├── DATA_REPORTS.md        # Latency, VRAM, quality metrics
+│   ├── EXPERIMENTS.md         # Ablations, prompt tests, failures
+│   ├── BENCHMARKS.md          # Comparisons vs other tools
+│   ├── SECURITY.md            # Abuse prevention, watermarking
+│   └── ETHICS.md              # Copyright, deepfake safety
 │
-├── audio/                  # Voice & captions
-│   ├── tts.py
-│   └── captions.py
+├── research/                  # SCIENTIFIC THINKING
+│   ├── related_work.md        # AnimateDiff, SVD, ControlNet papers
+│   ├── papers.md              # Paper summaries & links
+│   └── findings.md            # Your insights & lessons learned
 │
-├── video/                  # Editing & export
-│   ├── editor.py
-│   └── exporter.py
+├── product/                   # FOUNDER MODE
+│   ├── roadmap.md             # 30 / 90 / 365 day plan
+│   ├── monetization.md        # Business model
+│   ├── user_personas.md       # Creators, startups, agencies
+│   ├── go_to_market.md        # Distribution & growth
+│   └── pricing_future.md      # Optional paid tiers (later)
 │
-├── ui/
-│   └── app.py
+├── src/                       # CORE CODE
+│   └── animark_ai/
+│       ├── __init__.py
+│       │
+│       ├── domain/            # Core business concepts
+│       │   ├── ad.py
+│       │   ├── scene.py
+│       │   ├── storyboard.py
+│       │   ├── style.py
+│       │   └── enums.py
+│       │
+│       ├── agents/            # LLM agents
+│       │   ├── script_agent.py
+│       │   ├── storyboard_agent.py
+│       │   ├── hook_agent.py
+│       │   └── prompt_agent.py
+│       │
+│       ├── generation/        # Visual generation
+│       │   ├── image_gen.py       # SDXL
+│       │   ├── motion_gen.py      # AnimateDiff
+│       │   ├── consistency.py     # ControlNet, IP-Adapter
+│       │   └── styles.py          # Anime / cinematic configs
+│       │
+│       ├── audio/             # Voice & sound
+│       │   ├── tts.py
+│       │   ├── sfx.py
+│       │   └── captions.py
+│       │
+│       ├── video/             # Editing & rendering
+│       │   ├── editor.py
+│       │   ├── transitions.py
+│       │   └── exporter.py
+│       │
+│       ├── evaluation/        # Ad quality evaluation
+│       │   ├── hook_score.py
+│       │   ├── visual_score.py
+│       │   └── engagement_proxy.py
+│       │
+│       ├── llm/               # LLM interfaces
+│       │   ├── prompts/
+│       │   │   ├── marketing.py
+│       │   │   ├── storytelling.py
+│       │   │   └── ad_copy.py
+│       │   ├── inference.py
+│       │   └── router.py
+│       │
+│       └── utils/
+│           ├── logger.py
+│           ├── config.py
+│           └── gpu_utils.py
 │
-├── main.py
-└── README.md
-🚀 Installation
-Prerequisites
-Python 3.10+
+├── api/                       # BACKEND
+│   ├── main.py                # FastAPI app
+│   ├── routes/
+│   │   ├── generate.py
+│   │   ├── preview.py
+│   │   └── health.py
+│   ├── schemas/
+│   │   └── request_response.py
+│   └── deps.py
+│
+├── ui/                        # FRONTEND
+│   └── streamlit_app.py
+│
+├── assets/                    # VISUAL ASSETS
+│   ├── images/
+│   ├── videos/
+│   ├── diagrams/
+│   └── charts/
+│
+├── tests/                     # TESTING
+│   ├── agents/
+│   ├── generation/
+│   ├── audio/
+│   ├── video/
+│   └── api/
+│
+├── docker/                    # DEPLOYMENT
+│   └── Dockerfile
+│
+├── requirements.txt
+├── pyproject.toml             # (optional, future-proofing)
+├── .env.example
+└── .gitignore
+```
+## 🚀 Installation
+### Prerequisites
+- Python 3.10+
+- NVIDIA GPU (CUDA enabled)
+- FFmpeg installed and added to PATH
 
-NVIDIA GPU (CUDA enabled)
-
-FFmpeg installed and added to PATH
-
-Setup
+### Setup
+```bash
 git clone https://github.com/yourusername/Animark-AI.git
 cd Animark-AI
 
@@ -165,87 +253,76 @@ source venv/bin/activate   # Linux / Mac
 venv\Scripts\activate      # Windows
 
 pip install -r requirements.txt
-Environment Variables
-Create a .env file:
-
+```
+### Environment Variables
+Create a *`.env`* file:
+```bash
 OPENAI_API_KEY=your_key_here
 HF_TOKEN=your_huggingface_token
-(Optional — Animark-AI can run fully local.)
+```
+> (Optional — Animark-AI can run fully local.)
 
-💻 Usage
-Command Line
+## 💻 Usage
+### Command Line
+```bash
 python main.py \
   --product "Energy Drink" \
   --style anime \
   --duration 15
-Web UI
+```
+### Web UI
+```bash
 streamlit run ui/app.py
-🧪 Research-Driven Roadmap
-Phase 1 — Core Pipeline
- Script → Image → Video
+```
+### 🧪 Research-Driven Roadmap
+### Phase 1 — Core Pipeline
+- [ ] Script → Image → Video
+- [ ] Anime Ad MVP
 
- Anime Ad MVP
+### Phase 2 — Consistency Engine
+- [ ] ControlNet (Depth, OpenPose)
+- [ ] IP-Adapter for characters & products
 
-Phase 2 — Consistency Engine
- ControlNet (Depth, OpenPose)
+### Phase 3 — Audio Intelligence
+- [ ] Context-aware sound effects
+- [ ] Beat-synced transitions
 
- IP-Adapter for characters & products
+### Phase 4 — Ad Optimization
+- [ ] Hook quality scoring
+- [ ] Multi-variant ad generation (A/B)
 
-Phase 3 — Audio Intelligence
- Context-aware sound effects
+### Phase 5 — Productization
+- [ ] Brand memory (colors, logos)
+- [ ] Aspect ratio export (9:16, 1:1, 16:9)
 
- Beat-synced transitions
+## 📊 Documentation
+- 📐 High-Level Design (HLD)
+- 🔩 Low-Level Design (LLD)
+- 🧪 Experiments & Benchmarks
+- 📄 Research References
+- 📈 Monetization Strategy
 
-Phase 4 — Ad Optimization
- Hook quality scoring
+(See `/docs` and `/research` folders)
 
- Multi-variant ad generation (A/B)
-
-Phase 5 — Productization
- Brand memory (colors, logos)
-
- Aspect ratio export (9:16, 1:1, 16:9)
-
-📊 Documentation
-📐 High-Level Design (HLD)
-
-🔩 Low-Level Design (LLD)
-
-🧪 Experiments & Benchmarks
-
-📄 Research References
-
-📈 Monetization Strategy
-
-(See /docs and /research folders)
-
-💰 Monetization (Future)
+## 💰 Monetization (Future)
 Animark-AI is free & open-source, with optional future offerings:
+- Hosted inference
+- API access
+- Agency plans
+- Brand automation tools
 
-Hosted inference
-
-API access
-
-Agency plans
-
-Brand automation tools
-
-🤝 Contributing
+## 🤝 Contributing
 Contributions are welcome!
+- Research improvements
+- Performance optimizations
+- New styles
+- UI/UX enhancements
 
-Research improvements
-
-Performance optimizations
-
-New styles
-
-UI/UX enhancements
-
-📄 License
+## 📄 License
 MIT License — free to use, modify, and distribute.
 
-🌟 Vision
-Animark-AI aims to become the open-source standard for anime-powered video advertising, enabling anyone to create studio-quality ads without cost or complexity.
+## 🌟 Vision
+> Animark-AI aims to become the **open-source standard for anime-powered video advertising**, enabling anyone to create studio-quality ads without cost or complexity.
 
 If you like this project, ⭐ star the repo and join the journey.
 
